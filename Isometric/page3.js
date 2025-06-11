@@ -103,6 +103,31 @@ loader.load(
     });
 
     scene.add(tree3);
+
+    const treeB = tree3.clone(true);
+    treeB.position.set(0, 0, -3); // đổi vị trí tùy ý
+    treeB.scale.set(0.25, 0.25, 0.25); // nhỏ hơn
+    treeB.rotation.y = Math.PI / 3;
+    treeB.traverse((child) => {
+      if (child.isMesh) {
+        child.castShadow = true;
+        child.receiveShadow = true;
+      }
+    });
+    scene.add(treeB);
+
+    const treeA = tree3.clone(true);
+    treeA.position.set(1, 0, 3); // đổi vị trí tùy ý
+    treeA.scale.set(0.35, 0.35, 0.35); // nhỏ hơn
+    treeA.rotation.y = Math.PI / (-6);
+    treeA.traverse((child) => {
+      if (child.isMesh) {
+        child.castShadow = true;
+        child.receiveShadow = true;
+      }
+    });
+    scene.add(treeA);
+
     console.log('Tree model loaded and added to scene.');
   },
   (xhr) => {
@@ -110,6 +135,57 @@ loader.load(
   },
   (error) => {
     console.error('Error loading tree model:', error);
+  }
+);
+
+loader.load(
+  'public/tree.glb', // Đường dẫn tới mô hình cay
+  (gltf) => {
+      const tree = gltf.scene;
+      tree.position.set(-5, 0, -5); // Điều chỉnh nếu cần
+      tree.scale.set(1.5, 1.5, 1.5); // Có thể chỉnh scale tùy model
+      tree.traverse((child) => {
+          if (child.isMesh) {
+              child.castShadow = true;
+              child.receiveShadow = true;
+          }
+      });
+      scene.add(tree);
+      console.log('Tree model loaded and added to scene.');
+  },
+  (xhr) => {
+      console.log(`Treee model loading: ${(xhr.loaded / xhr.total * 100).toFixed(2)}%`);
+  },
+  (error) => {
+      console.error('Error loading tree model:', error);
+  }
+);
+
+loader.load(
+  'public/tree5.glb',
+  (gltf) => {
+    const tree5 = gltf.scene;
+
+    // Đặt vị trí và scale hợp lý
+    tree5.position.set(5, 0, 5);
+    tree5.scale.set(1.5, 1.5, 1.5);
+
+    // Bật shadow cho các mesh trong model
+    tree5.traverse((child) => {
+      if (child.isMesh) {
+        child.castShadow = true;
+        child.receiveShadow = true;
+      }
+    });
+
+    scene.add(tree5);
+    console.log('Island model loaded and added to scene.');
+  },
+  (xhr) => {
+    console.log(`Island model loading: ${(xhr.loaded / xhr.total * 100).toFixed(2)}%`);
+  },
+  (error) => {
+    console.error('Error loading island model:', error);
   }
 );
 
@@ -121,6 +197,7 @@ const fruit = new THREE.Mesh(
 // Đặt quả trên cây
 fruit.position.set(1, 4.5, 1);  // tùy vị trí cây
 fruit.castShadow = true;
+fruit.receiveShadow = true;
 scene.add(fruit);
 
 const velocity = { y: 0 };
@@ -174,7 +251,7 @@ function animate() {
         if (Math.abs(velocity.y) < 0.02) {
           velocity.y = 0;
         } else {
-          velocity.y *= -0.3; // Nảy lên với độ cao thấp hơn
+          velocity.y *= -0.4; // Nảy lên với độ cao thấp hơn
         }
       }
     } else {
@@ -192,3 +269,4 @@ function animate() {
 }
 
 animate();
+
